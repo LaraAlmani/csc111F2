@@ -36,13 +36,20 @@ return false;
 
 private boolean validKey (String o , String c){
 
-if (o.length() == c.length() && o.length() > 0){
-return true;
+return o.length() == c.length() && o.length() > 0;
+
 }
-else {
-return false ;
+
+public boolean isSet(){
+
+return isSet ;
 }
+
+public void setisSet(boolean val){
+
+isSet = val ;
 }
+
 
 
 
@@ -59,15 +66,40 @@ System.out.println("Code: " + code);
 }
 else 
 {
+System.out.println (" no set ");
 System.out.println ("\n +-------------------+");
 }
 }
+
+public boolean getisSet (){
+
+return isSet ;
 }
+
+public int getID(){
+
+return ID;
+}
+
+public String getoriginal (){
+
+return original;
+}
+
+
+
+public String getcode (){
+
+return code;
+}
+
+}
+
 
 class SecureSentence{
 
 private String sentence;
-private Key keyUsed;
+private Key keyUsed = new Key();
 private boolean encrypted;
 
 public SecureSentence(){
@@ -80,12 +112,12 @@ encrypted = false;
 public void setSentence(String s){
 sentence = s;
 encrypted = false;
-keyUsed.isSet = false;
+keyUsed = new Key();
 }
 
 public void setSentence(String s , Key key){
 
-if (key.isSet){
+if (key.isSet()){
 sentence = s;
 encrypted = true;
 keyUsed = key;
@@ -97,130 +129,162 @@ System.out.println("Cannot set sentence : Key not set yet . ");
 
 public void encrypt (Key key){
 
-if (!encrypted && key.isSet){
-sentence = encryptWithKey(sentence , key);
-keyUsed = key ; 
-encrypted = true;
-System.out.println("Sentence has encrypted successfully! ");
+if (sentence.equals("") || !key.getisSet()){
+System.out.println("Encryption failed : ( Key not set or sentence missing ).  ");
+return;
 }
-else if (encrypted) {
+if (encrypted) {
 System.out.println("Encryption failed : Sentence already encrypted.  ");
+return;
 }
-else {
-System.out.println("Encryption failed : Key not set.  ");
+
+String result = "";
+String o = key.getoriginal();
+String c = key.getcode();
+for (int i = 0; i < sentence.length(); i++ ){
+
+char ch = sentence.charAt(i);
+int pos = o.indexOf(ch);
+
+if (pos !=-1){
+result += c.charAt(pos);}
+else{
+result += ch;
 }
+}
+sentence = result ;
+encrypted = true;
+keyUsed = key;
+System.out.println("Sentence has encrypted successfully! ");
 }
 
 public void decrypt(){
-if (encrypted){
-sentence = decryptWithKey(sentence , keyUsed);
+if (!encrypted || !keyUsed.getisSet()){
+System.out.println("Decryption failed : ( not encrypted or key not set ).  ");
+return;
+}
+
+if (sentence.equals("")){
+System.out.println("Decryption failed : sentence is missing .  ");
+return;
+}
+
+String result = "";
+String o = keyUsed.getoriginal();
+String c = keyUsed.getcode();
+
+for (int i = 0; i < sentence.length(); i++ ){
+
+char ch = sentence.charAt(i);
+int pos = c.indexOf(ch);
+
+if (pos !=-1){
+
+result += o.charAt(pos);}
+
+else{
+result += ch;
+}
+}
+sentence = result ;
 encrypted = false;
 System.out.println("Sentence has decrypted successfully! ");
+
 }
-else{
-System.out.println("Decryption failed : Sentence is not encrypted.  ");
-}
-}
+
 
 public void displayMe(){
 
 System.out.println("--------------------------");
 System.out.println("Sentence : " + sentence);
 System.out.println("Encrypted : " + encrypted);
-if (keyUsed.isSet){
-System.out.println("Using Key ID : " + keyUsed.ID);
+if (keyUsed.getisSet()){
+System.out.println("Using Key ID : #" + keyUsed.getID());
 }
 else {
-System.out.println("No key used. ");}
+System.out.println(" No key used. ");}
 System.out.println("--------------------------");
 }
 
 public boolean isEncrypted(){
 return encrypted;
 }
-
-private String encryptWithKey(String s , Key k){
-
-String result = "";
-for (int i = 0; i < s.length(); i++ ){
-
-
-}}}
-//csc 111
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 public class projectF2
 {
-   static Scanner input = new Scanner (System.in);
-   public static void main (String [] args)
-   {
-      String keyO ="" , keyC ="" , sen ="" , PIN =""; // Declare and initialize the variables .
-      int choice;
-     String keyset ="";      
-     String PIN_input;
-     String senset= "";
-     String pinset =""; 
-      do {
-      System.out.println();
-         System.out.println("Enter a 4-digit PIN that does not start with zero : ");   // Set the PIN .
-         
-         PIN = input.next();
-         input.nextLine();
-         if (PIN.length() != 4){
+static int systemPin = -1;
 
-          System.out.println("\n Invalid PIN : you should enter 4-digit . .\n"); }
-          else
-          
-          if(PIN.charAt(0)=='0'){
-          
-           System.out.println("\n Invalid PIN : you cannot start with zero . .\n");} 
-           else
-           {
-           int i;
-           for (i=0 ; i<PIN.length() ; i++)
-           {
-            char a = PIN.charAt(i);
-            if ( a < '0' || a > '9' )
-            {
-            pinset = "yes";
-            System.out.println("Invalid PIN : you entered a letter .");
-            break; 
-            }
-            }
-            }                 
-      }
-      while (!(PIN.length() == 4 && PIN.charAt(0)!='0' && !(pinset == "yes") ));  // If the condition is true , the user enters the system . 
-             
-           do {
-         System.out.println("\n --- Main Menu ---");       // The main menu .
-         System.out.println("1. Set / Change the key "); 
-         System.out.println("2. Display the key ");
-         System.out.println("3. Enter the sentence ");
-         System.out.println("4. Display the current sentence ");
-         System.out.println("5. Encrypt the sentence ");
-         System.out.println("6. Decrypt the sentence ");
-         System.out.println("7. Exit ");
-         System.out.println("\n Enter choice : ");
-         choice = input.nextInt();                              // Read the choice .
-         input.nextLine();
+public static void setPin (Scanner read){
+while (true){
+
+System.out.println("Enter a 4-digit PIN that does not start with zero : ");
+String pinstr = read.next();
+
+if (pinstr.length() == 4 && pinstr.charAt(0) !='0'){
+
+systemPin = Integer.parseInt(pinstr);
+break;
+}
+else {
+System.out.println("\n Invalid PIN. Try again . .\n"); }
+}
+}
+
+public static boolean pinMatches(int pin){
+
+return pin == systemPin;
+}
+
+public static int menu(Scanner read){
+
+
+System.out.println("\n --- Main Menu ---");       // The main menu .
+
+         System.out.println("1. Set / Change a key "); 
          
+         System.out.println("2. Display all keys ");
+         
+         System.out.println("3. Select a SecureSentence object ");
+         
+         System.out.println("4. Enter a sentence ");
+         
+          System.out.println("5. Display  sentence ");
+          
+         System.out.println("6. Encrypt  sentence ");
+         
+         System.out.println("7. Decrypt the sentence ");
+         
+          System.out.println("8. Display all SecureSentence objects ");
+          
+         System.out.println("9. Exit ");
+         
+         System.out.println("\n Enter choice : ");
+         int choice = read.nextInt();
+         if (choice < 1 || choice > 9){
+         System.out.println("Invalid choice,please enter a number 1-9 . "); 
+         return -1 ;
+         }
+         return choice;
+         }
+
+      public static void main (String [] args)
+      {
+      Scanner read = new Scanner (System.in);
+       
+      Key key1 = new Key ();
+      Key key2 = new Key ();
+      Key key3 = new Key ();
+      
+      SecureSentence s1 = new SecureSentence ();
+      SecureSentence s2 = new SecureSentence ();
+      SecureSentence current = new SecureSentence ();
+      
+      setPin(read);
+      
+      
+             
+                   
          
          switch (choice)
          {
@@ -359,7 +423,6 @@ public class projectF2
                System.out.println("Invalid choice,please enter a number 1-7 . ");  
                } 
                }              
-          while (choice !=7); // While the user does not choose to exit system .
+         
    
    }
-}

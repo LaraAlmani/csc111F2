@@ -286,7 +286,7 @@ System.out.println("\n --- Main Menu ---");       // The main menu .
              
                    
          
-         switch (choice}
+         switch (choice)
          {
             case 1: 
                System.out.println("\n Enter PIN :  ");    // If PIN is correct, user is prompted to enter key original and key code .
@@ -426,3 +426,6 @@ System.out.println("\n --- Main Menu ---");       // The main menu .
          
    
    }
+
+
+//a

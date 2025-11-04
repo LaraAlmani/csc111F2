@@ -1,3 +1,27 @@
+/*
+
+Names :
+
+lara majed almani
+ 
+nourah abdulmajeed aljeraisy
+
+ID'S :
+
+446202834
+
+446202896
+
+Section number :
+
+78688
+
+Lab instructor's name :
+
+abeer ibrahim aldrees
+ 
+*/
+
 import java.util.*;
 class Key
 {
@@ -67,9 +91,10 @@ System.out.println("Code: " + code);
 else 
 {
 System.out.println (" no set ");
+}
 System.out.println ("\n +-------------------+");
 }
-}
+
 
 public boolean getisSet (){
 
@@ -92,8 +117,8 @@ public String getcode (){
 
 return code;
 }
-
 }
+
 
 
 class SecureSentence{
@@ -260,6 +285,8 @@ System.out.println("\n --- Main Menu ---");       // The main menu .
          System.out.println("\n Enter choice : ");
          
          int input = read.nextInt();
+             read.nextLine();
+
          return input;
          }
          
@@ -319,7 +346,7 @@ System.out.println("\n --- Main Menu ---");       // The main menu .
        break;
        
        case 9:
-       System.out.println(" Goodbye .) ");
+       System.out.println(" Goodbye :) ");
        break;
        
        default:
@@ -334,26 +361,42 @@ System.out.println("\n --- Main Menu ---");       // The main menu .
      {
     System.out.println(" Enter PIN : ");
     String pInput = read.nextLine();
-    
     if ( pinMatches(pInput) )
     {
     System.out.println("Choose key number (1-3) : ");
     int kNum = read.nextInt();
-    System.out.println("Enter original key : ");
+        read.nextLine();
+        
+       while (kNum < 1 || kNum > 3) {
+    System.out.println("Invalid key number.");
+    System.out.println("Choose key number (1-3) : ");
+    kNum = read.nextInt();
+    read.nextLine();
+}
+
+        
+        System.out.println("Enter original key : ");
     String o = read.nextLine();
+
     System.out.println("Enter code key : ");
     String c = read.nextLine();
-    boolean select = false;
     
-    if (kNum == 1)
+    boolean select = false;
+    switch (kNum){
+    case 1 :
     select = key1.setKey(o , c);
-    else
-    if (kNum == 2)
+    break;
+    
+    case 2 :
     select = key2.setKey(o , c);
-    else
-    if (kNum == 3)
+    break;
+    
+    case 3 :
     select = key3.setKey(o , c);
+  break;
   
+  default: System.out.println("Invalid choice you must choose from (1-3).  ");
+}
     if (select)
     System.out.println("Key set successfully ");
     else 
@@ -397,6 +440,8 @@ currentSentence = s2;
 
 else
 System.out.println(" Invalid selection . ");
+
+
 } 
        
       
@@ -408,13 +453,19 @@ System.out.println(" No Secure Sentence selected . ");
 return;
 }
 System.out.print(" Enter a Sentence : ");
+
 String s = read.nextLine();
 System.out.print(" is the Sentence already encrypted? (Yes / No ) : ");
+
 String answer = read.next();
+    read.nextLine();
+
 if (answer.equalsIgnoreCase( "Yes" ) )
 {
 System.out.print("Enter key number used (1-3) : ");
 int kNum = read.nextInt();
+    read.nextLine();
+
 Key k = null;   ///CHECK
 
 if (kNum == 1)
@@ -426,7 +477,7 @@ if (kNum == 1)
     if (kNum == 3)
     k = key3;
     
-    if ( k != null && k.isSet() )
+    if ( k != null && k.getisSet())
     {
     currentSentence.setSentence(s , k);
     }
@@ -441,9 +492,62 @@ currentSentence.setSentence(s);
 }
 }    
       
-      
-      
-      
-      
-       
-       }
+ public static void displayCurrentSentence(){
+  if (currentSentence != null) //check
+   currentSentence.displayMe();
+   else 
+  System.out.println("No Secrue Sentence selected . ");
+  }
+  
+  public static void encryptSentence()
+{
+if (currentSentence == null){
+System.out.println("No Secrue Sentence selected . ");
+return;
+}
+  System.out.println("Enter key number (1-3) to use for encryption : ");
+  int kNum = read.nextInt();
+Key k = null;   ///CHECK
+
+if (kNum == 1)
+    k = key1;
+    else
+    if (kNum == 2)
+    k = key2;
+    else
+    if (kNum == 3)
+    k = key3;
+if ( k == null || !k.isSet() ){
+System.out.println("Invalid or unset key.");
+    return;
+}
+currentSentence.encrypt(k);
+}
+public static void decryptSentence(){
+
+if (currentSentence == null){
+
+System.out.println("No Secrue Sentence selected . ");
+
+return;
+}
+
+currentSentence.decrypt();
+
+}
+
+public static void displayAllSentences(){
+
+System.out.println("Sentence #1 : ");
+s1.displayMe();
+System.out.println("Sentence #2 : ");
+s2.displayMe();
+
+if (currentSentence == s1)
+
+System.out.println("Current sentence : #1 ");
+else if (currentSentence == s2)
+System.out.println("Current sentence : #2 ");
+
+}
+}

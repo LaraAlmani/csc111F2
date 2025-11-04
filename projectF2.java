@@ -213,30 +213,28 @@ return encrypted;
 
 public class projectF2
 {
-static int systemPin = -1;
+private static String systemPin = "";
 
-public static void setPin (Scanner read){
-while (true){
+public static void setPin (){
 
+String pinstr;
+
+do 
+{
 System.out.println("Enter a 4-digit PIN that does not start with zero : ");
-String pinstr = read.next();
-
-if (pinstr.length() == 4 && pinstr.charAt(0) !='0'){
-
-systemPin = Integer.parseInt(pinstr);
-break;
+pinstr = read.nextLine();
 }
-else {
-System.out.println("\n Invalid PIN. Try again . .\n"); }
-}
+while (pinstr.length() != 4 || pinstr.charAt(0) == '0' );
+systemPin = pinstr;
+System.out.println("PIN set successfully . ");
 }
 
-public static boolean pinMatches(int pin){
+public static boolean pinMatches(String pin){
 
-return pin == systemPin;
+return pin.equals(systemPin);
 }
 
-public static int menu(Scanner read){
+public static int menu(){
 
 
 System.out.println("\n --- Main Menu ---");       // The main menu .
@@ -260,170 +258,192 @@ System.out.println("\n --- Main Menu ---");       // The main menu .
          System.out.println("9. Exit ");
          
          System.out.println("\n Enter choice : ");
-         int choice = read.nextInt();
-         if (choice < 1 || choice > 9){
-         System.out.println("Invalid choice,please enter a number 1-9 . "); 
-         return -1 ;
+         
+         int input = read.nextInt();
+         return input;
          }
-         return choice;
-         }
+         
+      static Scanner read = new Scanner (System.in);
+       
+      static Key key1 = new Key ();
+      static Key key2 = new Key ();
+      static Key key3 = new Key ();
+      
+      static SecureSentence s1 = new SecureSentence ();
+      static SecureSentence s2 = new SecureSentence ();
+      static SecureSentence currentSentence = new SecureSentence ();
+
 
       public static void main (String [] args)
       {
-      Scanner read = new Scanner (System.in);
+            
+      setPin();
+      
+      int choice;
+       do
+       {
+       choice = menu();
        
-      Key key1 = new Key ();
-      Key key2 = new Key ();
-      Key key3 = new Key ();
-      
-      SecureSentence s1 = new SecureSentence ();
-      SecureSentence s2 = new SecureSentence ();
-      SecureSentence current = new SecureSentence ();
-      
-      setPin(read);
-      
-      
-             
-                   
-         
-         switch (choice)
-         {
-            case 1: 
-               System.out.println("\n Enter PIN :  ");    // If PIN is correct, user is prompted to enter key original and key code .
-                PIN_input = input.nextLine();
-                input.nextLine();
-               if (PIN_input.equals(PIN))               
-               {
-               System.out.print("\n Enter key original : ");    
-               
-                keyO = input.nextLine();
-                   input.nextLine();   
-                  int lenO = keyO.length();    
-                  
-                  System.out.print("\n Enter key code : "); 
-                  
-                  keyC = input.nextLine();       
-                  input.nextLine();
-                  int lenC = keyC.length();      
-                  
-                  if (lenO == lenC)   
-                  {
-                     int count = 0;  
-                     for (int i = 0 ; i < lenC ; i++) {     // Checking for all characters in key original if they match characters of key code .
-                        if (keyC.indexOf(keyO.charAt(i)) != -1){  
-                           count++;   
-                     }
-                     }
-                     if (count == lenC){  
-                        keyset = "yes";   
-                        System.out.println("\n Key saved successfully. "); 
-                     }
-                     else{
-                        System.out.println("\n Invalid key (characters mismatch)."); 
-                        }
-                  } 
-                  else {
-                  System.out.println("\n Invalid key (length not equal)."); 
-                  }
-                  }
-                  else {
-                     System.out.println("\n Wrong PIN .");  
-                     }
-                  break;
-                  case 2 :
-               System.out.println("\n Enter PIN :  ");  // If PIN is correct and keys are set, key (original/code) are displayed .
-               PIN_input = input.nextLine();
-               input.nextLine();
-               if (PIN_input.equals(PIN) && (keyset.equals("yes")))  // Checking if PIN is correct .
-               {
-               System.out.print("\n The original key is : " + keyO+"\n"+"\n The key code is : " + keyC+ "\n");
-               }
-               else
-               {
-               System.out.print("\n No key set OR wrong PIN .\n"); 
-               }
-               break;
-               
-               case 3 :
-               System.out.println("\n Enter a sentence :");  // Prompting user to enter sentence, then sentence is read and saved .
-               sen = input.nextLine();
-               input.nextLine();  
-               senset = "yes";         
-               System.out.println("\n"+"Sentence saved successfully ."); 
-               break;
-               
-               case 4 :
-                
-                if (senset.equals("yes")) // If a sentence was typed, sentence is displayed to the user .
-                {
-                System.out.print(sen);  
-                }
-                else 
-                {
-                System.out.print("\n"+"No sentence entered ."+"\n");
-                }
-                break;
-               
-                case 5 :
-                if ((keyset.equals("yes")) && !senset.equals(""))  // Checking if key exsists and sentence exists .
-                {
-               String encr ="";  
-                for (int i = 0 ; i < sen.length() ; i++)  
-                {
-                char c1 = sen.charAt(i);                          // c1 stores the character in sentence at position i .
-                int pos =keyO.indexOf(c1);                    //pos stores position of character c1 in key original .
-               
-                if (pos != -1) 
-                {
-               encr += keyC.charAt(pos);                      // Adding the corresponding character from key code to the encrypted sentence .
-              }
-              else 
-              {
-              encr += c1; 
-              }
-              }
-               sen = encr;  
-               System.out.println("\n The encrypted sentence is : " + sen);  
-               }
-               else 
-               {
-               System.out.println ("\n Key or the sentence is missing .");  
-               }
-               break;
-               
-               case 6 :
-               if (keyO.length() > 0 && keyC.length() > 0 && sen.length() > 0)  // If key original and key code and sentence were written, .
-               {
-               String decr = ""; 
-               for (int i = 0 ; i < sen.length(); i++)    // i checks for every character in sentence .
-               {
-               char c2 = sen.charAt(i);                //c2 stores the character in sentence at position i .
-               for (int p = 0 ; p < keyC.length(); p++)    //p checks for every character in key code .
-               {
-               if (c2 == keyC.charAt(p))  // If c2 at position i exsists in key code at position p, the corresponding character from key original to key code will be stored in c2  .
-               {
-               c2 = keyO.charAt(p);  
-               break;
-               }
-               }
-               decr += c2;  
-               }
-               sen = decr;  
-               System.out.println ("\n The decrypted sentence is : " + sen);  
-               }
-               else 
-               {
-               System.out.println("\n Key or the sentence is missing ."); 
-               }
-               break;
-               case 7 :
-               System.out.println("\n see you soon :)");  // Goodbye message .
-               break;
-               default :
-               System.out.println("Invalid choice,please enter a number 1-7 . ");  
-               } 
-               }              
-         
-   
-   }
+       switch (choice)
+       {
+       case 1:
+       setOrChangeKey();
+       break;
+       
+       case 2:
+       displayAllKeys();
+       break;
+       
+       case 3:
+       selectSecureSentence();
+       break;
+       
+       case 4:
+       enterSentence();
+       break;
+       
+       case 5:
+       displayCurrentSentence();
+       break;
+       
+       case 6:
+       encryptSentence();
+       break;
+       
+       case 7:
+       decryptSentence();
+       break;
+       
+       case 8:
+       displayAllSentences();
+       break;
+       
+       case 9:
+       System.out.println(" Goodbye .) ");
+       break;
+       
+       default:
+       System.out.println(" Invalid Choice, please enter a number 1-9 .");
+    }
+    }
 
+     while (choice != 9);
+    }
+       
+     public static void setOrChangeKey()
+     {
+    System.out.println(" Enter PIN : ");
+    String pInput = read.nextLine();
+    
+    if ( pinMatches(pInput) )
+    {
+    System.out.println("Choose key number (1-3) : ");
+    int kNum = read.nextInt();
+    System.out.println("Enter original key : ");
+    String o = read.nextLine();
+    System.out.println("Enter code key : ");
+    String c = read.nextLine();
+    boolean select = false;
+    
+    if (kNum == 1)
+    select = key1.setKey(o , c);
+    else
+    if (kNum == 2)
+    select = key2.setKey(o , c);
+    else
+    if (kNum == 3)
+    select = key3.setKey(o , c);
+  
+    if (select)
+    System.out.println("Key set successfully ");
+    else 
+    System.out.println("Invalid key ");
+    }
+    else
+    {  
+    System.out.println("Incorrect PIN ");
+    }
+     
+     } 
+      
+public static void displayAllKeys()
+{
+ System.out.println(" Enter PIN : ");
+ String pInput = read.nextLine();
+ 
+ if (  pinMatches(pInput) )
+ {
+ key1.displayMe();
+ key2.displayMe();
+ key3.displayMe();
+ }
+else 
+{
+System.out.println("Incorrect PIN ");
+}
+}
+       
+public static void selectSecureSentence()
+{
+System.out.print(" Select Secure Sentence (1 or 2) : ");
+int s = read.nextInt();
+
+if (s == 1)
+currentSentence = s1;
+
+else 
+  if (s == 2)
+currentSentence = s2;
+
+else
+System.out.println(" Invalid selection . ");
+} 
+       
+      
+public static void enterSentence()
+{
+if (currentSentence == null )   ////CHECK
+{
+System.out.println(" No Secure Sentence selected . ");
+return;
+}
+System.out.print(" Enter a Sentence : ");
+String s = read.nextLine();
+System.out.print(" is the Sentence already encrypted? (Yes / No ) : ");
+String answer = read.next();
+if (answer.equalsIgnoreCase( "Yes" ) )
+{
+System.out.print("Enter key number used (1-3) : ");
+int kNum = read.nextInt();
+Key k = null;   ///CHECK
+
+if (kNum == 1)
+    k = key1;
+    else
+    if (kNum == 2)
+    k = key2;
+    else
+    if (kNum == 3)
+    k = key3;
+    
+    if ( k != null && k.isSet() )
+    {
+    currentSentence.setSentence(s , k);
+    }
+    else 
+    {
+    System.out.println(" Invalid key . ");
+    }   
+}
+else 
+{
+currentSentence.setSentence(s);
+}
+}    
+      
+      
+      
+      
+      
+       
+       }

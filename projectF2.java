@@ -368,7 +368,7 @@ System.out.println("\n --- Main Menu ---");       // The main menu .
         read.nextLine();
         
        while (kNum < 1 || kNum > 3) {
-    System.out.println("Invalid key number.");
+    System.out.println("Invalid key number.\n");
     System.out.println("Choose key number (1-3) : ");
     kNum = read.nextInt();
     read.nextLine();
@@ -398,13 +398,13 @@ System.out.println("\n --- Main Menu ---");       // The main menu .
   default: System.out.println("Invalid choice you must choose from (1-3).  ");
 }
     if (select)
-    System.out.println("Key set successfully ");
+    System.out.println("Key set successfully. ");
     else 
-    System.out.println("Invalid key ");
+    System.out.println("Invalid key. ");
     }
     else
     {  
-    System.out.println("Incorrect PIN ");
+    System.out.println("Incorrect PIN. ");
     }
      
      } 
@@ -422,7 +422,7 @@ public static void displayAllKeys()
  }
 else 
 {
-System.out.println("Incorrect PIN ");
+System.out.println("Incorrect PIN. ");
 }
 }
        
@@ -447,7 +447,7 @@ System.out.println(" Invalid selection . ");
       
 public static void enterSentence()
 {
-if (currentSentence == null )   ////CHECK
+if (currentSentence == null )   
 {
 System.out.println(" No Secure Sentence selected . ");
 return;
@@ -466,7 +466,7 @@ System.out.print("Enter key number used (1-3) : ");
 int kNum = read.nextInt();
     read.nextLine();
 
-Key k = null;   ///CHECK
+Key k = null;   
 
 if (kNum == 1)
     k = key1;
@@ -493,7 +493,7 @@ currentSentence.setSentence(s);
 }    
       
  public static void displayCurrentSentence(){
-  if (currentSentence != null) //check
+  if (currentSentence != null) 
    currentSentence.displayMe();
    else 
   System.out.println("No Secrue Sentence selected . ");
@@ -507,7 +507,7 @@ return;
 }
   System.out.println("Enter key number (1-3) to use for encryption : ");
   int kNum = read.nextInt();
-Key k = null;   ///CHECK
+Key k = null;   
 
 if (kNum == 1)
     k = key1;

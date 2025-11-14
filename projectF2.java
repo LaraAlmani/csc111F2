@@ -23,15 +23,15 @@ abeer ibrahim aldrees
 */
 
 import java.util.*;
-class Key
+class Key       //Key class
 {
-public static int numKeys = 0;
+public static int numKeys = 0;   // Attributes for Key class 
 private int ID;
 private String original;
 private String code;
-private boolean isSet;
+private boolean isSet;         
 
-public Key()
+public Key() // default constructor
 {
 numKeys++;
 ID = numKeys;
@@ -40,7 +40,7 @@ code = "";
 isSet = false;
 }
 
-public boolean setKey (String o , String c)
+public boolean setKey (String o , String c) //setKey method that check if the key is valid or not
 {
 if ( validKey(o, c)  )
 {
@@ -58,13 +58,13 @@ return false;
 }
 }
 
-private boolean validKey (String o , String c){
+private boolean validKey (String o , String c){ // validKey method return true if the len of ori and code are the same and the ori len is not 0  
 
 return o.length() == c.length() && o.length() > 0;
 
 }
 
-public void displayMe()
+public void displayMe() // displayMe method is for display the ori and code characters and show if there is a key set or not 
 {
 System.out.println ("\n +-------------------+");
 System.out.println("| Key#" + ID);
@@ -86,49 +86,49 @@ System.out.println ("\n +-------------------+");
 }
 
 
-public boolean getisSet (){
+public boolean getisSet (){ // getisSet method is to check is it set or not 
 
 return isSet ;
 }
 
-public int getID(){
+public int getID(){ // getID method return the ID
 
 return ID;
 }
 
-public String getoriginal (){
+public String getoriginal (){ // getoriginal method return the ori 
 
 return original;
 }
 
-public String getcode (){
+public String getcode (){ // getcode method return the code 
 
 return code;
 }
-}
+} //end class Key 
 
 
 
-class SecureSentence{
+class SecureSentence{ // SecureSentence class 
 
-private String sentence;
+private String sentence;     //// Attributes for SecureSentence class
 private Key keyUsed;
 private boolean encrypted;
 
-public SecureSentence(){
+public SecureSentence(){ // default constructor
 sentence ="";
 keyUsed = null;
 encrypted = false;
 }
 
 
-public void setSentence(String s){
+public void setSentence(String s){  // setSentence method store the new sentence without a key 
 sentence = s;
 encrypted = false;
 keyUsed = null;
 }
 
-public void setSentence(String s , Key key){
+public void setSentence(String s , Key key){ // setSentence method store the new sentence with a key encryption ( overload :) )
 
 sentence = s;
 encrypted = true;
@@ -443,7 +443,7 @@ public static void enterSentence()
 if (currentSentence == null )   
 {
 System.out.println(" No Secure Sentence selected . ");
-}//check
+}
 System.out.print(" Enter a Sentence : ");
     read.nextLine();
 
@@ -495,7 +495,7 @@ currentSentence.setSentence(s);
 {
 if (currentSentence == null){
 System.out.println("No Secrue Sentence selected . ");
-}//check
+}
   System.out.println("Enter key number (1-3) to use for encryption : ");
   int kNum = read.nextInt();
 Key k = null;   
@@ -510,7 +510,7 @@ if (kNum == 1)
     k = key3;
 if ( k == null ){
 System.out.println("Invalid key number .");
-}//check
+}
 currentSentence.encrypt(k);
 }
 public static void decryptSentence(){

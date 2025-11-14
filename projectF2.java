@@ -23,204 +23,13 @@ abeer ibrahim aldrees
 */
 
 import java.util.*;
-class Key       //Key class
-{
-public static int numKeys = 0;   // Attributes for Key class 
-private int ID;
-private String original;
-private String code;
-private boolean isSet;         
-
-public Key() // default constructor
-{
-numKeys++;
-ID = numKeys;
-original = "";
-code = "";
-isSet = false;
-}
-
-public boolean setKey (String o , String c) //setKey method that check if the key is valid or not
-{
-if ( validKey(o, c)  )
-{
-original = o;
-code = c;
-isSet = true;
-return true;
-}
-else 
-{
-original = "";
-code = "";
-isSet = false;
-return false;
-}
-}
-
-private boolean validKey (String o , String c){ // validKey method return true if the len of ori and code are the same and the ori len is not 0  
-
-return o.length() == c.length() && o.length() > 0;
-
-}
-
-public void displayMe() // displayMe method is for display the ori and code characters and show if there is a key set or not 
-{
-System.out.println ("\n +-------------------+");
-System.out.println("| Key#" + ID);
-
-if (isSet)
-{
-System.out.println("|set    |");
-System.out.println("|---+---|");
-System.out.println("| o | c |");
-System.out.println("|---+---|");
-for (int i = 0 ; i < original.length(); i++ )
-System.out.println("| " + original.charAt(i) + " | " + code.charAt(i) + " |" );
-}
-else 
-{
-System.out.println ("|not set|");
-}
-System.out.println ("\n +-------------------+");
-}
-
-
-public boolean getisSet (){ // getisSet method is to check is it set or not 
-
-return isSet ;
-}
-
-public int getID(){ // getID method return the ID
-
-return ID;
-}
-
-public String getoriginal (){ // getoriginal method return the ori 
-
-return original;
-}
-
-public String getcode (){ // getcode method return the code 
-
-return code;
-}
-} //end class Key 
-
-
-
-class SecureSentence{ // SecureSentence class 
-
-private String sentence;     //// Attributes for SecureSentence class
-private Key keyUsed;
-private boolean encrypted;
-
-public SecureSentence(){ // default constructor
-sentence ="";
-keyUsed = null;
-encrypted = false;
-}
-
-
-public void setSentence(String s){  // setSentence method store the new sentence without a key 
-sentence = s;
-encrypted = false;
-keyUsed = null;
-}
-
-public void setSentence(String s , Key key){ // setSentence method store the new sentence with a key encryption ( overload :) )
-
-sentence = s;
-encrypted = true;
-keyUsed = key;
-}
-
-public void encrypt (Key key){
-
-if (sentence.equals("") || !key.getisSet()){
-System.out.println("Encryption failed : ( Key not set or sentence missing ).  ");
-return;
-}
-if (encrypted) {
-System.out.println("Encryption failed : Sentence already encrypted.  ");
-return;
-}
-
-String result = "";
-String o = key.getoriginal();
-String c = key.getcode();
-for (int i = 0; i < sentence.length(); i++ ){
-
-char ch = sentence.charAt(i);
-int pos = o.indexOf(ch);
-
-if (pos !=-1){
-result += c.charAt(pos);}
-else{
-result += ch;
-}
-}
-sentence = result ;
-encrypted = true;
-keyUsed = key;
-System.out.println("Sentence has encrypted successfully! ");
-}
-
-public void decrypt(){
-if (!encrypted){
-System.out.println("Decryption failed : ( not encrypted ).  ");
-return;
-}
-
-String result = "";
-String o = keyUsed.getoriginal();
-String c = keyUsed.getcode();
-
-for (int i = 0; i < sentence.length(); i++ ){
-
-char ch = sentence.charAt(i);
-int pos = c.indexOf(ch);
-
-if (pos !=-1){
-
-result += o.charAt(pos);}
-
-else{
-result += ch;
-}
-}
-sentence = result ;
-encrypted = false;
-System.out.println("Sentence has decrypted successfully! ");
-
-}
-
-
-public void displayMe(){
-
-System.out.println("--------------------------");
-System.out.println("Sentence : " + sentence);
-System.out.println("Encrypted : " + encrypted);
-if (keyUsed != null){
-System.out.println("Using Key ID : #" + keyUsed.getID());
-}
-else {
-System.out.println(" No key used. ");}
-System.out.println("--------------------------");
-}
-
-public boolean isEncrypted(){
-return encrypted;
-}
-}
-
-public class projectF2
+public class projectF2  // main class (class projectF2)
 {
 static String systemPin = "";
 
-static Scanner read = new Scanner (System.in);
+static Scanner read = new Scanner (System.in);       ///Attributes
 
-public static void setPin (){
+public static void setPin (){  //setPin method to set an eligible pin
 
 String pinstr;
 boolean val;
@@ -250,15 +59,15 @@ systemPin = pinstr;
 System.out.println("PIN set successfully . ");
 }
 
-public static boolean pinMatches(String pin){
+public static boolean pinMatches(String pin){ // pinMathces method accepts pin and checks if it matches the previously typed pin 
 
 return pin.equals(systemPin);
 }
 
-public static int menu(){
+public static int menu(){  //menu method displays main menu, reads user's input and stores it in menu
 
 
-System.out.println("\n --- Main Menu ---");       // The main menu .
+System.out.println("\n --- Main Menu ---");       
 
          System.out.println("1. Set / Change a key "); 
          
@@ -286,25 +95,25 @@ System.out.println("\n --- Main Menu ---");       // The main menu .
          }
        
       static Key key1 = new Key ();
-      static Key key2 = new Key ();
+      static Key key2 = new Key ();    // declaring Key objects
       static Key key3 = new Key ();
       
       static SecureSentence s1 = new SecureSentence ();
-      static SecureSentence s2 = new SecureSentence ();
+      static SecureSentence s2 = new SecureSentence ();   //declaring SecureSentence objects
       static SecureSentence currentSentence = null;
 
 
-      public static void main (String [] args)
+      public static void main (String [] args)  //main method
       {
             
-      setPin();
+      setPin();  
       
       int choice;
        do
        {
-       choice = menu();
+       choice = menu(); // previously read input is now stored in choice
        
-       switch (choice)
+       switch (choice) // each case takes the user to a suitable method
        {
        case 1:
        setOrChangeKey();
@@ -338,7 +147,7 @@ System.out.println("\n --- Main Menu ---");       // The main menu .
        displayAllSentences();
        break;
        
-       case 9:
+       case 9: // user chooses to exits system
        System.out.println(" Goodbye :) ");
        break;
        
@@ -350,7 +159,7 @@ System.out.println("\n --- Main Menu ---");       // The main menu .
      while (choice != 9);
     }
        
-     public static void setOrChangeKey()
+     public static void setOrChangeKey()  //case 1, sets key(s), original and code
      {
     System.out.println(" Enter PIN : ");
     read.nextLine();
@@ -402,7 +211,7 @@ System.out.println("\n --- Main Menu ---");       // The main menu .
      
      } 
       
-public static void displayAllKeys()
+public static void displayAllKeys() //case 2, if pin is correct, displays all keys
 {
  System.out.println(" Enter PIN : ");
      read.nextLine();
@@ -421,7 +230,7 @@ System.out.println("Incorrect PIN. ");
 }
 }
        
-public static void selectSecureSentence()
+public static void selectSecureSentence() //case 3, user chooses a SecureSentence object
 {
 System.out.print(" Select Secure Sentence (1 or 2) : ");
 int s = read.nextInt();
@@ -438,7 +247,7 @@ else
 System.out.println(" Invalid selection . ");
 }      
       
-public static void enterSentence()
+public static void enterSentence()  //case 4, reads input from user and stores it in s, and associates it to a key if it was already encrypted
 {
 if (currentSentence == null )   
 {
@@ -480,18 +289,18 @@ if (kNum == 1)
 }
 else 
 {
-currentSentence.setSentence(s);
+currentSentence.setSentence(s); 
 }
 }    
       
- public static void displayCurrentSentence(){
+ public static void displayCurrentSentence(){ //case 5, displayes currentSentence if it was already set
   if (currentSentence != null) 
    currentSentence.displayMe();
    else 
   System.out.println("No Secrue Sentence selected . ");
   }
   
-  public static void encryptSentence()
+  public static void encryptSentence() //case 6, encryptes sentence using key of choice
 {
 if (currentSentence == null){
 System.out.println("No Secrue Sentence selected . ");
@@ -513,7 +322,7 @@ System.out.println("Invalid key number .");
 }
 currentSentence.encrypt(k);
 }
-public static void decryptSentence(){
+public static void decryptSentence(){ //case 7, decryptes currentSentence
 
 if (currentSentence == null){
 
@@ -526,7 +335,7 @@ currentSentence.decrypt();
 
 }
 
-public static void displayAllSentences(){
+public static void displayAllSentences(){ //case 8, displays all sentences
 
 System.out.println("Sentence #1 : ");
 s1.displayMe();
@@ -539,5 +348,5 @@ System.out.println("Current sentence : #1 ");
 else if (currentSentence == s2)
 System.out.println("Current sentence : #2 ");
 
-}
-}
+} 
+} //end main class (class projectF2)
